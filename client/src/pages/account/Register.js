@@ -126,21 +126,25 @@ const Register = () => {
   };
 
   const handleSubmit = async () => {
-    dispatch(register(state)).then((res) => {
-      if (res.payload.status) {
-        setAlertsuccess(true); // popup show
+    try {
+      const res = await dispatch(register(state)).unwrap();
 
-        // navigate ko delay kar do
+      if (res?.status) {
+        setAlertsuccess(true);
+
         setTimeout(() => {
           navigate("/");
         }, 2000);
 
-        localStorage.setItem("topup", true);
-        localStorage.setItem("topup22", true);
+        localStorage.setItem("topup", "true");
+        localStorage.setItem("topup22", "true");
       } else {
         setAlerts(true);
       }
-    });
+    } catch (error) {
+      console.error("Register error:", error);
+      setAlerts(true);
+    }
   };
 
   useEffect(() => {
@@ -150,7 +154,7 @@ const Register = () => {
     }, 2000);
     setState({
       ...state,
-      invitecode: invitecode || "xWtUd92947",
+      invitecode: invitecode || "395683828017",
       ccode: ccode,
     });
   }, [successMessage, dispatch, alerts, alertsuccess]);
